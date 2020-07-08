@@ -15,16 +15,16 @@ namespace Bondski.QvdLib
     /// </summary>
     public class HeaderReader
     {
-        private readonly string path;
+        private readonly Stream input;
         private XDocument headerDocument = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HeaderReader"/> class.
         /// </summary>
-        /// <param name="path">Path to the QVD file.</param>
-        public HeaderReader(string path)
+        /// <param name="input">Path to the QVD file.</param>
+        public HeaderReader(Stream input)
         {
-            this.path = path;
+            this.input = input;
         }
 
         /// <summary>
@@ -52,23 +52,35 @@ namespace Bondski.QvdLib
         /// Returns the XML document read from the QVD file header. If the header has not been read yet, it will be read from the file.
         /// </summary>
         /// <returns>XDocument containing the QVD file hader.</returns>
-        public async Task<XDocument> ReadHeaderAsync()
+        public XDocument ReadHeader()
         {
-            using (StreamReader reader = new StreamReader(this.path))
+            byte[] searchString = Encoding.UTF8.GetBytes("</QvdTableHeader>");
+            using (MemoryStream bufferStream = new MemoryStream())
             {
-                StringBuilder xmlString = new StringBuilder();
-                while (!reader.EndOfStream)
+                int foundBytes = 0;
+                while (foundBytes < searchString.Length)
                 {
-                    string line = await reader.ReadLineAsync();
-                    xmlString.Append(line).AppendLine();
-                    if (line.Contains("</QvdTableHeader>"))
+                    byte nextByte = (byte)this.input.ReadByte();
+                    if (nextByte == searchString[foundBytes])
                     {
-                        break;
+                        foundBytes++;
+                    }
+                    else
+                    {
+                        foundBytes = 0;
+                    }
+
+                    bufferStream.WriteByte(nextByte);
+
+                    if (this.input.Position == this.input.Length)
+                    {
+                        throw new InvalidDataException("Could not find QVD XML table header.");
                     }
                 }
 
+                bufferStream.Seek(0, SeekOrigin.Begin);
+                this.headerDocument = XDocument.Load(bufferStream);
                 this.IsRead = true;
-                this.headerDocument = XDocument.Parse(xmlString.ToString());
                 return this.headerDocument;
             }
         }

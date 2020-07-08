@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Xunit;
 
 namespace Bondski.QvdLib.Tests
@@ -8,8 +9,8 @@ namespace Bondski.QvdLib.Tests
         [Fact]
         public void NormalRead()
         {
-            var reader = new HeaderReader("Resources\\HeaderReaderTest\\Test.qvd");
-            var doc = reader.ReadHeaderAsync().Result;
+            var reader = new HeaderReader(File.OpenRead("Resources\\HeaderReaderTest\\Test.qvd"));
+            var doc = reader.ReadHeader();
             Assert.NotNull(doc);
             Assert.Equal("QvdTableHeader", doc.Root.Name);
         }
@@ -17,24 +18,24 @@ namespace Bondski.QvdLib.Tests
         [Fact]
         public void IsRead()
         {
-            var reader = new HeaderReader("Resources\\HeaderReaderTest\\Test.qvd");
+            var reader = new HeaderReader(File.OpenRead("Resources\\HeaderReaderTest\\Test.qvd"));
             Assert.False(reader.IsRead);
-            var doc = reader.ReadHeaderAsync().Result;
+            var doc = reader.ReadHeader();
             Assert.True(reader.IsRead);
         }
 
         [Fact]
         public void HeaderDocument_ShouldThrowIfNotRead()
         {
-            var reader = new HeaderReader("Resources\\HeaderReaderTest\\Test.qvd");
+            var reader = new HeaderReader(File.OpenRead("Resources\\HeaderReaderTest\\Test.qvd"));
             Assert.Throws<InvalidOperationException>(() => _ = reader.HeaderDocument);
         }
 
         [Fact]
         public void HeaderDocument_ShouldBeSameAsReturnedWhenReading()
         {
-            var reader = new HeaderReader("Resources\\HeaderReaderTest\\Test.qvd");
-            var doc = reader.ReadHeaderAsync().Result;
+            var reader = new HeaderReader(File.OpenRead("Resources\\HeaderReaderTest\\Test.qvd"));
+            var doc = reader.ReadHeader();
             Assert.Same(doc, reader.HeaderDocument);
         }
     }
