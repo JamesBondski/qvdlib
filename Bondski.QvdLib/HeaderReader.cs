@@ -16,7 +16,7 @@ namespace Bondski.QvdLib
     public class HeaderReader
     {
         private readonly Stream input;
-        private XDocument headerDocument = null;
+        private XDocument? headerDocument = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HeaderReader"/> class.
@@ -35,7 +35,7 @@ namespace Bondski.QvdLib
         /// <summary>
         /// Gets the XML Document containing the header. If the header was not read yet, this will return null.
         /// </summary>
-        public XDocument HeaderDocument
+        public XDocument? HeaderDocument
         {
             get
             {
