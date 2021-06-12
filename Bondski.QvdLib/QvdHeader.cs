@@ -13,8 +13,6 @@ namespace Bondski.QvdLib
     /// </summary>
     public class QvdHeader
     {
-        private FieldInfo[] fields;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="QvdHeader"/> class.
         /// </summary>
@@ -40,8 +38,13 @@ namespace Bondski.QvdLib
                 throw new InvalidHeaderException("XML element not QvdTableHeader.");
             }
 
-            this.fields = GetFields(qvdTableHeaderElement);
+            this.Fields = GetFields(qvdTableHeaderElement);
         }
+
+        /// <summary>
+        /// Gets the field descriptions from the QVD header.
+        /// </summary>
+        public FieldInfo[] Fields { get; }
 
         private static FieldInfo[] GetFields(XElement qvdTableHeaderElement)
         {
