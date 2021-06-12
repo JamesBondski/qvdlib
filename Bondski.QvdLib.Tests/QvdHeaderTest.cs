@@ -12,13 +12,13 @@ namespace Bondski.QvdLib.Tests
         [Fact]
         public void Constructor_XDocNotQvdTableHeader()
         {
-            _ = Assert.Throws<ArgumentException>(() => { QvdHeader header = new QvdHeader(this.invalidDoc); });
+            _ = Assert.Throws<InvalidHeaderException>(() => { QvdHeader header = new QvdHeader(this.invalidDoc); });
         }
 
         [Fact]
         public void Constructor_XElementNotQvdTableHeader()
         {
-            _ = Assert.Throws<ArgumentException>(() => { QvdHeader header = new QvdHeader(this.invalidDoc.Root); });
+            _ = Assert.Throws<InvalidHeaderException>(() => { QvdHeader header = new QvdHeader(this.invalidDoc.Root); });
         }
     }
 }
