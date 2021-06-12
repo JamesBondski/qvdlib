@@ -20,5 +20,14 @@ namespace Bondski.QvdLib.Tests
         {
             _ = Assert.Throws<InvalidHeaderException>(() => { QvdHeader header = new QvdHeader(this.invalidDoc.Root); });
         }
+
+        private string docWithoutFieldsXml = @"<QvdTableHeader></QvdTableHeader>";
+        private XDocument docWithoutFields => XDocument.Parse(this.docWithoutFieldsXml);
+
+        [Fact]
+        public void Constructor_NoFieldsInQvdTableHeader()
+        {
+            _ = Assert.Throws<InvalidHeaderException>(() => { QvdHeader header = new QvdHeader(this.docWithoutFields.Root); } );
+        }
     }
 }
