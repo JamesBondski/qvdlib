@@ -4,6 +4,7 @@
 
 namespace Bondski.QvdLib
 {
+    using System;
     using System.Linq;
     using System.Xml.Linq;
     using System.Xml.XPath;
@@ -61,20 +62,52 @@ namespace Bondski.QvdLib
             return fields;
         }
 
-        private static FieldInfo GetFieldInfo(XElement qvdFieldHeaderElement)
+        private static FieldInfo GetFieldInfo(XElement element)
         {
-            return new FieldInfo(name: GetValue(qvdFieldHeaderElement, "FieldName"));
+            return new FieldInfo(
+                name: GetRequired<string>(element, "FieldName"),
+                bitOffset: Get<int>(element, "BitOffset"));
         }
 
-        private static string GetValue(XElement qvdFieldHeaderElement, string elementName)
+        private static T GetRequired<T>(XElement element, string elementName)
         {
-            XElement? xElement = qvdFieldHeaderElement.Element(elementName);
-            if (xElement == null)
+            bool isMissing = false;
+            T? result = GetValue<T>(element, elementName, out isMissing);
+            if (isMissing || result == null)
             {
-                throw new InvalidHeaderException("FieldHeader is missing element " + elementName);
+                throw new InvalidHeaderException("QVD header is missing element " + elementName);
             }
 
-            return xElement.Value;
+            return result;
+        }
+
+        private static T? Get<T>(XElement element, string elementName)
+        {
+            bool dummy = false;
+            return GetValue<T>(element, elementName, out dummy);
+        }
+
+        private static T? GetValue<T>(XElement element, string elementName, out bool missing)
+        {
+            XElement? xElement = element.Element(elementName);
+            if (xElement == null)
+            {
+                missing = true;
+                return default;
+            }
+            else
+            {
+                missing = false;
+            }
+
+            try
+            {
+                return (T)Convert.ChangeType(xElement.Value, typeof(T));
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidHeaderException("Invalid field value " + xElement.Value + " in element " + elementName, ex);
+            }
         }
     }
 }

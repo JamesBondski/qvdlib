@@ -51,5 +51,20 @@ namespace Bondski.QvdLib.Tests
             string xml = @"<QvdTableHeader><Fields><QvdFieldHeader></QvdFieldHeader></Fields></QvdTableHeader>";
             _ = Assert.Throws<InvalidHeaderException>(() => { QvdHeader header = new QvdHeader(GetDoc(xml)); });
         }
+
+        [Fact]
+        public void Fields_ThrowsIfInvalidValue()
+        {
+            string xml = @"<QvdTableHeader><Fields><QvdFieldHeader><FieldName>Test</FieldName><BitOffset>A</BitOffset></QvdFieldHeader></Fields></QvdTableHeader>";
+            _ = Assert.Throws<InvalidHeaderException>(() => { QvdHeader header = new QvdHeader(GetDoc(xml)); });
+        }
+
+        [Fact]
+        public void Fields_ParsesNumericValue()
+        {
+            string xml = @"<QvdTableHeader><Fields><QvdFieldHeader><FieldName>Test</FieldName><BitOffset>4</BitOffset></QvdFieldHeader></Fields></QvdTableHeader>";
+            QvdHeader header = new QvdHeader(GetDoc(xml));
+            Assert.Equal(4, header.Fields[0].bitOffset);
+        }
     }
 }

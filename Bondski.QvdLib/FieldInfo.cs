@@ -7,5 +7,5 @@ namespace Bondski.QvdLib
     /// <summary>
     /// Holds information about a field in the QVD file.
     /// </summary>
-    public record FieldInfo(string name);
+    public record FieldInfo(string name, int? bitOffset);
 }
