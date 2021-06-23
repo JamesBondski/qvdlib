@@ -12,22 +12,22 @@ namespace Bondski.QvdLib
     /// <summary>
     /// Holds the information from a QvdTableHeader element.
     /// </summary>
-    public class QvdHeader
+    public class HeaderParser
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="QvdHeader"/> class.
+        /// Initializes a new instance of the <see cref="HeaderParser"/> class.
         /// </summary>
         /// <param name="qvdTableHeaderDoc">XDocument containing the QvdTableHeader element.</param>
-        public QvdHeader(XDocument qvdTableHeaderDoc)
+        public HeaderParser(XDocument qvdTableHeaderDoc)
             : this(qvdTableHeaderDoc.Root)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="QvdHeader"/> class.
+        /// Initializes a new instance of the <see cref="HeaderParser"/> class.
         /// </summary>
         /// <param name="qvdTableHeaderElement">QvdTableHeader element.</param>
-        public QvdHeader(XElement? qvdTableHeaderElement)
+        public HeaderParser(XElement? qvdTableHeaderElement)
         {
             if (qvdTableHeaderElement == null)
             {
@@ -66,7 +66,13 @@ namespace Bondski.QvdLib
         {
             return new FieldInfo(
                 name: GetRequired<string>(element, "FieldName"),
-                bitOffset: Get<int>(element, "BitOffset"));
+                bitOffset: Get<int>(element, "BitOffset"),
+                bitWidth: Get<int>(element, "BitWidth"),
+                bias: Get<int>(element, "Bias"),
+                noOfSymbols: Get<int>(element, "NoOfSymbols"),
+                offset: Get<int>(element, "Offset"),
+                length: Get<int>(element, "Length"),
+                comment: Get<string>(element, "Comment"));
         }
 
         private static T GetRequired<T>(XElement element, string elementName)

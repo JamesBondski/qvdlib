@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Bondski.QvdLib.Tests
 {
-    public class QvdHeaderTest
+    public class HeaderParserTest
     {
         private string invalidDocXml = @"<TableHeader></TableHeader>";
         private XDocument invalidDoc => XDocument.Parse(this.invalidDocXml);
@@ -12,13 +12,13 @@ namespace Bondski.QvdLib.Tests
         [Fact]
         public void Constructor_XDocNotQvdTableHeader()
         {
-            _ = Assert.Throws<InvalidHeaderException>(() => { QvdHeader header = new QvdHeader(this.invalidDoc); });
+            _ = Assert.Throws<InvalidHeaderException>(() => { HeaderParser header = new HeaderParser(this.invalidDoc); });
         }
 
         [Fact]
         public void Constructor_XElementNotQvdTableHeader()
         {
-            _ = Assert.Throws<InvalidHeaderException>(() => { QvdHeader header = new QvdHeader(this.invalidDoc.Root); });
+            _ = Assert.Throws<InvalidHeaderException>(() => { HeaderParser header = new HeaderParser(this.invalidDoc.Root); });
         }
 
         private string docWithoutFieldsXml = @"<QvdTableHeader></QvdTableHeader>";
@@ -27,7 +27,7 @@ namespace Bondski.QvdLib.Tests
         [Fact]
         public void Constructor_NoFieldsInQvdTableHeader()
         {
-            _ = Assert.Throws<InvalidHeaderException>(() => { QvdHeader header = new QvdHeader(this.docWithoutFields.Root); } );
+            _ = Assert.Throws<InvalidHeaderException>(() => { HeaderParser header = new HeaderParser(this.docWithoutFields.Root); } );
         }
 
         private string fieldNameXml = @"<QvdTableHeader><Fields><QvdFieldHeader><FieldName>Test</FieldName></QvdFieldHeader></Fields></QvdTableHeader>";
@@ -41,7 +41,7 @@ namespace Bondski.QvdLib.Tests
         [Fact]
         public void Fields_FieldName()
         {
-            var header = new QvdHeader(this.docFieldName);
+            var header = new HeaderParser(this.docFieldName);
             Assert.Equal("Test", header.Fields[0].name);
         }
 
@@ -49,21 +49,21 @@ namespace Bondski.QvdLib.Tests
         public void Fields_ThrowsIfNoName()
         {
             string xml = @"<QvdTableHeader><Fields><QvdFieldHeader></QvdFieldHeader></Fields></QvdTableHeader>";
-            _ = Assert.Throws<InvalidHeaderException>(() => { QvdHeader header = new QvdHeader(GetDoc(xml)); });
+            _ = Assert.Throws<InvalidHeaderException>(() => { HeaderParser header = new HeaderParser(GetDoc(xml)); });
         }
 
         [Fact]
         public void Fields_ThrowsIfInvalidValue()
         {
             string xml = @"<QvdTableHeader><Fields><QvdFieldHeader><FieldName>Test</FieldName><BitOffset>A</BitOffset></QvdFieldHeader></Fields></QvdTableHeader>";
-            _ = Assert.Throws<InvalidHeaderException>(() => { QvdHeader header = new QvdHeader(GetDoc(xml)); });
+            _ = Assert.Throws<InvalidHeaderException>(() => { HeaderParser header = new HeaderParser(GetDoc(xml)); });
         }
 
         [Fact]
         public void Fields_ParsesNumericValue()
         {
             string xml = @"<QvdTableHeader><Fields><QvdFieldHeader><FieldName>Test</FieldName><BitOffset>4</BitOffset></QvdFieldHeader></Fields></QvdTableHeader>";
-            QvdHeader header = new QvdHeader(GetDoc(xml));
+            HeaderParser header = new HeaderParser(GetDoc(xml));
             Assert.Equal(4, header.Fields[0].bitOffset);
         }
     }
