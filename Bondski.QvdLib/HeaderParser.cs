@@ -39,13 +39,13 @@ namespace Bondski.QvdLib
                 throw new InvalidHeaderException("XML element not QvdTableHeader.");
             }
 
-            this.Fields = GetFields(qvdTableHeaderElement);
+            this.Header = new QvdHeader(GetFields(qvdTableHeaderElement));
         }
 
         /// <summary>
-        /// Gets the field descriptions from the QVD header.
+        /// Gets the information from the parsed XML document.
         /// </summary>
-        public FieldInfo[] Fields { get; }
+        public QvdHeader Header { get; }
 
         private static FieldInfo[] GetFields(XElement qvdTableHeaderElement)
         {

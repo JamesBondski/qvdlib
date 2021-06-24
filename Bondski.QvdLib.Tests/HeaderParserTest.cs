@@ -41,8 +41,8 @@ namespace Bondski.QvdLib.Tests
         [Fact]
         public void Fields_FieldName()
         {
-            var header = new HeaderParser(this.docFieldName);
-            Assert.Equal("Test", header.Fields[0].name);
+            var parser = new HeaderParser(this.docFieldName);
+            Assert.Equal("Test", parser.Header.fields[0].name);
         }
 
         [Fact]
@@ -63,8 +63,8 @@ namespace Bondski.QvdLib.Tests
         public void Fields_ParsesNumericValue()
         {
             string xml = @"<QvdTableHeader><Fields><QvdFieldHeader><FieldName>Test</FieldName><BitOffset>4</BitOffset></QvdFieldHeader></Fields></QvdTableHeader>";
-            HeaderParser header = new HeaderParser(GetDoc(xml));
-            Assert.Equal(4, header.Fields[0].bitOffset);
+            HeaderParser parser = new HeaderParser(GetDoc(xml));
+            Assert.Equal(4, parser.Header.fields[0].bitOffset);
         }
     }
 }
