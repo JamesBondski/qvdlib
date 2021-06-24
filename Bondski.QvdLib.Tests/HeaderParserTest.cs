@@ -42,7 +42,7 @@ namespace Bondski.QvdLib.Tests
         public void Fields_FieldName()
         {
             var parser = new HeaderParser(this.docFieldName);
-            Assert.Equal("Test", parser.Header.fields[0].name);
+            Assert.Equal("Test", parser.Header.Fields[0].name);
         }
 
         [Fact]
@@ -64,7 +64,31 @@ namespace Bondski.QvdLib.Tests
         {
             string xml = @"<QvdTableHeader><Fields><QvdFieldHeader><FieldName>Test</FieldName><BitOffset>4</BitOffset></QvdFieldHeader></Fields></QvdTableHeader>";
             HeaderParser parser = new HeaderParser(GetDoc(xml));
-            Assert.Equal(4, parser.Header.fields[0].bitOffset);
+            Assert.Equal(4, parser.Header.Fields[0].bitOffset);
+        }
+
+        private record HeaderFieldTest(string XmlTagName, string content, string PropertyName, object value);
+
+        private static HeaderFieldTest[] HeaderFields = new HeaderFieldTest[]
+        {
+            new HeaderFieldTest("QvBuildNo", "1", "QvBuildNo", "1"),
+            new HeaderFieldTest("CreatorDoc", "Test.qvw", "CreatorDoc", "Test.qvw"),
+        };
+
+        [Fact]
+        public void ParsesHeaderFields()
+        {
+            foreach(HeaderFieldTest test in HeaderFields)
+            {
+                string xml = String.Format(
+                    @"<QvdTableHeader><{0}>{1}</{0}><Fields><QvdFieldHeader><FieldName>Test</FieldName><BitOffset>4</BitOffset></QvdFieldHeader></Fields></QvdTableHeader>",
+                    test.XmlTagName, 
+                    test.content
+                    );
+                HeaderParser parser = new HeaderParser(GetDoc(xml));
+                object actualValue = typeof(QvdHeader).GetProperty(test.PropertyName).GetValue(parser.Header);
+                Assert.Equal(test.value, actualValue);
+            }
         }
     }
 }

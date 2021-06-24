@@ -39,7 +39,12 @@ namespace Bondski.QvdLib
                 throw new InvalidHeaderException("XML element not QvdTableHeader.");
             }
 
-            this.Header = new QvdHeader(GetFields(qvdTableHeaderElement));
+            this.Header = new QvdHeader()
+            {
+                Fields = GetFields(qvdTableHeaderElement),
+                QvBuildNo = Get<string>(qvdTableHeaderElement, "QvBuildNo"),
+                CreatorDoc = Get<string>(qvdTableHeaderElement, "CreatorDoc"),
+            };
         }
 
         /// <summary>
