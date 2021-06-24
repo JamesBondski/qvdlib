@@ -73,6 +73,8 @@ namespace Bondski.QvdLib.Tests
         {
             new HeaderFieldTest("QvBuildNo", "1", "QvBuildNo", "1"),
             new HeaderFieldTest("CreatorDoc", "Test.qvw", "CreatorDoc", "Test.qvw"),
+            new HeaderFieldTest("CreateUtcTime", "2020-06-12 19:20:22", "CreateTime", DateTime.Parse("2020-06-12 19:20:22")),
+            new HeaderFieldTest("SourceCreateUtcTime", "", "SourceCreateTime", null),
         };
 
         [Fact]

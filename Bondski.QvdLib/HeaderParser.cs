@@ -44,6 +44,20 @@ namespace Bondski.QvdLib
                 Fields = GetFields(qvdTableHeaderElement),
                 QvBuildNo = Get<string>(qvdTableHeaderElement, "QvBuildNo"),
                 CreatorDoc = Get<string>(qvdTableHeaderElement, "CreatorDoc"),
+                CreateTime = GetDateTime(qvdTableHeaderElement, "CreateUtcTime"),
+                SourceCreateTime = GetDateTime(qvdTableHeaderElement, "SourceCreateUtcTime"),
+                SourceFileTime = GetDateTime(qvdTableHeaderElement, "SourceFileUtcTime"),
+                SourceFileSize = Get<long>(qvdTableHeaderElement, "SourceFileSize"),
+                StaleUtcTime = GetDateTime(qvdTableHeaderElement, "StaleUtcTime"),
+                TableName = Get<string>(qvdTableHeaderElement, "TableName"),
+                Compression = Get<string>(qvdTableHeaderElement, "Compression"),
+                RecordByteSize = GetRequired<int>(qvdTableHeaderElement, "RecordByteSize"),
+                NoOfRecords = GetRequired<int>(qvdTableHeaderElement, "NoOfRecords"),
+                Offset = GetRequired<int>(qvdTableHeaderElement, "Offset"),
+                Length = GetRequired<long>(qvdTableHeaderElement, "Length"),
+                Lineage = Get<string>(qvdTableHeaderElement, "Lineage"),
+                Comment = Get<string>(qvdTableHeaderElement, "Comment"),
+                EncryptionInfo = Get<string>(qvdTableHeaderElement, "EncryptionInfo"),
             };
         }
 
@@ -98,10 +112,20 @@ namespace Bondski.QvdLib
             return GetValue<T>(element, elementName, out dummy);
         }
 
+        private static DateTime? GetDateTime(XElement element, string elementName)
+        {
+            DateTime? result = Get<DateTime>(element, elementName);
+            if(result == default(DateTime))
+            {
+                return null;
+            }
+            return result;
+        }
+
         private static T? GetValue<T>(XElement element, string elementName, out bool missing)
         {
             XElement? xElement = element.Element(elementName);
-            if (xElement == null)
+            if (xElement == null || string.IsNullOrEmpty(xElement.Value))
             {
                 missing = true;
                 return default;
