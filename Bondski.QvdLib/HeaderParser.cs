@@ -83,15 +83,17 @@ namespace Bondski.QvdLib
 
         private static FieldInfo GetFieldInfo(XElement element)
         {
-            return new FieldInfo(
-                name: GetRequired<string>(element, "FieldName"),
-                bitOffset: Get<int>(element, "BitOffset"),
-                bitWidth: Get<int>(element, "BitWidth"),
-                bias: Get<int>(element, "Bias"),
-                noOfSymbols: Get<int>(element, "NoOfSymbols"),
-                offset: Get<int>(element, "Offset"),
-                length: Get<int>(element, "Length"),
-                comment: Get<string>(element, "Comment"));
+            return new FieldInfo()
+            {
+                Name = GetRequired<string>(element, "FieldName"),
+                BitOffset = Get<int>(element, "BitOffset"),
+                BitWidth = Get<int>(element, "BitWidth"),
+                Bias = Get<int>(element, "Bias"),
+                NoOfSymbols = Get<int>(element, "NoOfSymbols"),
+                Offset = Get<int>(element, "Offset"),
+                Length = Get<int>(element, "Length"),
+                Comment = Get<string>(element, "Comment"),
+            };
         }
 
         private static T GetRequired<T>(XElement element, string elementName)
