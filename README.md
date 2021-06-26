@@ -14,3 +14,6 @@ As soon as the first release is ready, I will put this on Nuget and you can simp
 
 ## Roadmap
 The next (big) step will be adding reading of first values and then rows from the file. After that, I will probably start looking into optimizing things for various use cases (reading all data from a file will be rather different from trying to read specific rows). Maybe, at some point, I'd like to implement writing files.
+
+## License
+Licensed under the Apache License 2.0.
