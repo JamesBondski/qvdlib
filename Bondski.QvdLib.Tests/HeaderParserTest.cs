@@ -30,51 +30,115 @@ namespace Bondski.QvdLib.Tests
             _ = Assert.Throws<InvalidHeaderException>(() => { HeaderParser header = new HeaderParser(this.docWithoutFields.Root); } );
         }
 
-        private string fieldNameXml = @"<QvdTableHeader><Fields><QvdFieldHeader><FieldName>Test</FieldName></QvdFieldHeader></Fields></QvdTableHeader>";
-        private XDocument docFieldName => XDocument.Parse(this.fieldNameXml);
-
         private XDocument GetDoc(string xml)
         {
             return XDocument.Parse(xml);
         }
 
+        private static string baseXml = @"
+ <QvdTableHeader>
+   <QvBuildNo>50622</QvBuildNo>
+   <CreatorDoc>C:\Users\wuntv\Documents\Qlik\Sense\Apps\Test.qvf</CreatorDoc>
+   <CreateUtcTime>2020-06-12 19:20:22</CreateUtcTime>
+   <SourceCreateUtcTime></SourceCreateUtcTime>
+   <SourceFileUtcTime></SourceFileUtcTime>
+   <SourceFileSize>-1</SourceFileSize>
+   <StaleUtcTime></StaleUtcTime>
+   <TableName>Test</TableName>
+   <Fields>
+     <QvdFieldHeader>
+       <FieldName>StringColumn</FieldName>
+       <BitOffset>0</BitOffset>
+       <BitWidth>1</BitWidth>
+       <Bias>0</Bias>
+       <NumberFormat>
+         <Type>UNKNOWN</Type>
+         <nDec>0</nDec>
+         <UseThou>0</UseThou>
+         <Fmt></Fmt>
+         <Dec></Dec>
+         <Thou></Thou>
+       </NumberFormat>
+       <NoOfSymbols>2</NoOfSymbols>
+       <Offset>0</Offset>
+       <Length>6</Length>
+       <Comment></Comment>
+       <Tags>
+         <String>$ascii</String>
+         <String>$text</String>
+       </Tags>
+     </QvdFieldHeader>
+     <QvdFieldHeader>
+       <FieldName>DualColumn</FieldName>
+       <BitOffset>1</BitOffset>
+       <BitWidth>7</BitWidth>
+       <Bias>0</Bias>
+       <NumberFormat>
+         <Type>UNKNOWN</Type>
+         <nDec>0</nDec>
+         <UseThou>0</UseThou>
+         <Fmt></Fmt>
+         <Dec></Dec>
+         <Thou></Thou>
+       </NumberFormat>
+       <NoOfSymbols>2</NoOfSymbols>
+       <Offset>6</Offset>
+       <Length>14</Length>
+       <Comment></Comment>
+       <Tags>
+         <String>$numeric</String>
+         <String>$integer</String>
+       </Tags>
+     </QvdFieldHeader>
+   </Fields>
+   <Compression></Compression>
+   <RecordByteSize>1</RecordByteSize>
+   <NoOfRecords>2</NoOfRecords>
+   <Offset>20</Offset>
+   <Length>2</Length>
+   <Lineage></Lineage>
+   <Comment></Comment>
+   <EncryptionInfo></EncryptionInfo>
+ </QvdTableHeader>
+";
+
         [Fact]
         public void Fields_FieldName()
         {
-            var parser = new HeaderParser(this.docFieldName);
-            Assert.Equal("Test", parser.Header.Fields[0].name);
+            var parser = new HeaderParser(XDocument.Parse(baseXml));
+            Assert.Equal("StringColumn", parser.Header.Fields[0].Name);
         }
 
         [Fact]
         public void Fields_ThrowsIfNoName()
         {
-            string xml = @"<QvdTableHeader><Fields><QvdFieldHeader></QvdFieldHeader></Fields></QvdTableHeader>";
+            string xml = baseXml.Replace("<FieldName>StringColumn</FieldName>", "");
             _ = Assert.Throws<InvalidHeaderException>(() => { HeaderParser header = new HeaderParser(GetDoc(xml)); });
         }
 
         [Fact]
         public void Fields_ThrowsIfInvalidValue()
         {
-            string xml = @"<QvdTableHeader><Fields><QvdFieldHeader><FieldName>Test</FieldName><BitOffset>A</BitOffset></QvdFieldHeader></Fields></QvdTableHeader>";
+            string xml = baseXml.Replace("<BitOffset>0</BitOffset>", "<BitOffset>A</BitOffset>");
             _ = Assert.Throws<InvalidHeaderException>(() => { HeaderParser header = new HeaderParser(GetDoc(xml)); });
         }
 
         [Fact]
         public void Fields_ParsesNumericValue()
         {
-            string xml = @"<QvdTableHeader><Fields><QvdFieldHeader><FieldName>Test</FieldName><BitOffset>4</BitOffset></QvdFieldHeader></Fields></QvdTableHeader>";
+            string xml = baseXml;
             HeaderParser parser = new HeaderParser(GetDoc(xml));
-            Assert.Equal(4, parser.Header.Fields[0].bitOffset);
+            Assert.Equal(0, parser.Header.Fields[0].BitOffset);
         }
 
-        private record HeaderFieldTest(string XmlTagName, string content, string PropertyName, object value);
+        private record HeaderFieldTest(string PropertyName, object value);
 
         private static HeaderFieldTest[] HeaderFields = new HeaderFieldTest[]
         {
-            new HeaderFieldTest("QvBuildNo", "1", "QvBuildNo", "1"),
-            new HeaderFieldTest("CreatorDoc", "Test.qvw", "CreatorDoc", "Test.qvw"),
-            new HeaderFieldTest("CreateUtcTime", "2020-06-12 19:20:22", "CreateTime", DateTime.Parse("2020-06-12 19:20:22")),
-            new HeaderFieldTest("SourceCreateUtcTime", "", "SourceCreateTime", null),
+            new HeaderFieldTest("QvBuildNo", "50622"),
+            new HeaderFieldTest("CreatorDoc", @"C:\Users\wuntv\Documents\Qlik\Sense\Apps\Test.qvf"),
+            new HeaderFieldTest("CreateTime", DateTime.Parse("2020-06-12 19:20:22")),
+            new HeaderFieldTest("SourceCreateTime", null),
         };
 
         [Fact]
@@ -82,15 +146,21 @@ namespace Bondski.QvdLib.Tests
         {
             foreach(HeaderFieldTest test in HeaderFields)
             {
-                string xml = String.Format(
-                    @"<QvdTableHeader><{0}>{1}</{0}><Fields><QvdFieldHeader><FieldName>Test</FieldName><BitOffset>4</BitOffset></QvdFieldHeader></Fields></QvdTableHeader>",
-                    test.XmlTagName, 
-                    test.content
-                    );
+                string xml = baseXml;
                 HeaderParser parser = new HeaderParser(GetDoc(xml));
                 object actualValue = typeof(QvdHeader).GetProperty(test.PropertyName).GetValue(parser.Header);
                 Assert.Equal(test.value, actualValue);
             }
+        }
+
+        [Fact]
+        public void Fields_TagList()
+        {
+            string xml = baseXml;
+            HeaderParser parser = new HeaderParser(GetDoc(xml));
+            Assert.Equal(2, parser.Header.Fields[0].Tags.Length);
+            Assert.Equal("$ascii", parser.Header.Fields[0].Tags[0]);
+            Assert.Equal("$text", parser.Header.Fields[0].Tags[1]);
         }
     }
 }

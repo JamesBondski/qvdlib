@@ -93,6 +93,7 @@ namespace Bondski.QvdLib
                 Offset = Get<int>(element, "Offset"),
                 Length = Get<int>(element, "Length"),
                 Comment = Get<string>(element, "Comment"),
+                Tags = GetStringList(element, "Tags", "String"),
             };
         }
 
@@ -122,6 +123,18 @@ namespace Bondski.QvdLib
                 return null;
             }
             return result;
+        }
+
+        private static string[]? GetStringList(XElement element, string elementName, string subElementName)
+        {
+            XElement? xElement = element.Element(elementName);
+            if(xElement == null || string.IsNullOrEmpty(xElement.Value))
+            {
+                return null;
+            }
+
+            var childElements = xElement.Elements(subElementName);
+            return childElements.Select(ce => ce.Value).ToArray();
         }
 
         private static T? GetValue<T>(XElement element, string elementName, out bool missing)

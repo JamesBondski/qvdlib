@@ -48,6 +48,8 @@ namespace Bondski.QvdLib
         /// Gets the comment for the field.
         /// </summary>
         public string? Comment { get; init; }
+
+        public string[]? Tags { get; init; }
     }
 }
 
