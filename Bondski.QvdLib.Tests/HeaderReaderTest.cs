@@ -7,7 +7,7 @@ namespace Bondski.QvdLib.Tests
 {
     public class HeaderReaderTest
     {
-        private static string TestFilePath => new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName + "\\Resources\\HeaderReaderTest\\Test.qvd";
+        private static string TestFilePath => new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName + "/Resources/HeaderReaderTest/Test.qvd";
 
         [Fact]
         public void NormalRead()
