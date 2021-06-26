@@ -89,11 +89,30 @@ namespace Bondski.QvdLib
                 BitOffset = Get<int>(element, "BitOffset"),
                 BitWidth = Get<int>(element, "BitWidth"),
                 Bias = Get<int>(element, "Bias"),
+                NumberFormat = GetNumberFormat(element.Element("NumberFormat")),
                 NoOfSymbols = Get<int>(element, "NoOfSymbols"),
                 Offset = Get<int>(element, "Offset"),
                 Length = Get<int>(element, "Length"),
                 Comment = Get<string>(element, "Comment"),
                 Tags = GetStringList(element, "Tags", "String"),
+            };
+        }
+
+        private static NumberFormat GetNumberFormat(XElement? element)
+        {
+            if (element == null)
+            {
+                return new NumberFormat();
+            }
+
+            return new NumberFormat()
+            {
+                Type = Get<string>(element, "Type"),
+                NDec = Get<byte>(element, "nDec"),
+                UseThou = Get<byte>(element, "UseThou"),
+                Fmt = Get<string>(element, "Fmt"),
+                Dec = Get<string>(element, "Dec"),
+                Thou = Get<string>(element, "Thou"),
             };
         }
 

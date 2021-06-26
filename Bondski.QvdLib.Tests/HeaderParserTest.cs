@@ -162,5 +162,16 @@ namespace Bondski.QvdLib.Tests
             Assert.Equal("$ascii", parser.Header.Fields[0].Tags[0]);
             Assert.Equal("$text", parser.Header.Fields[0].Tags[1]);
         }
+
+        [Fact]
+        public void Fields_NumberFormat()
+        {
+            string xml = baseXml;
+            HeaderParser parser = new HeaderParser(GetDoc(xml));
+            NumberFormat format = parser.Header.Fields[0].NumberFormat;
+            Assert.Equal("UNKNOWN", format.Type);
+            Assert.Equal(0, (int)format.NDec);
+            Assert.Null(format.Fmt);
+        }
     }
 }

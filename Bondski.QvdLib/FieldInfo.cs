@@ -30,6 +30,11 @@ namespace Bondski.QvdLib
         public int? Bias { get; init; }
 
         /// <summary>
+        /// Gets information about the number format.
+        /// </summary>
+        public NumberFormat? NumberFormat { get; init; }
+
+        /// <summary>
         /// Gets the number of symbols for this field.
         /// </summary>
         public int? NoOfSymbols { get; init; }
