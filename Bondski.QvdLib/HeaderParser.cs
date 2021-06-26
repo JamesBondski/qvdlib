@@ -12,7 +12,7 @@ namespace Bondski.QvdLib
     /// <summary>
     /// Holds the information from a QvdTableHeader element.
     /// </summary>
-    public class HeaderParser
+    internal class HeaderParser
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HeaderParser"/> class.
