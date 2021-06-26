@@ -12,16 +12,16 @@ namespace Bondski.QvdLib
     /// <summary>
     /// Reads the XML header from a QVD file.
     /// </summary>
-    public class HeaderReader
+    public class HeaderExtractor
     {
         private readonly Stream input;
         private XDocument? headerDocument = null;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HeaderReader"/> class.
+        /// Initializes a new instance of the <see cref="HeaderExtractor"/> class.
         /// </summary>
         /// <param name="input">Path to the QVD file.</param>
-        public HeaderReader(Stream input)
+        public HeaderExtractor(Stream input)
         {
             this.input = input;
         }
