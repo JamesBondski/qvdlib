@@ -37,7 +37,7 @@ namespace Bondski.QvdLib
         /// <summary>
         /// Gets the number of symbols for this field.
         /// </summary>
-        public int? NoOfSymbols { get; init; }
+        public int NoOfSymbols { get; init; }
 
         /// <summary>
         /// Gets the offset.

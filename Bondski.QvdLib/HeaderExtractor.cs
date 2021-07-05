@@ -53,7 +53,7 @@ namespace Bondski.QvdLib
         /// <returns>XDocument containing the QVD file hader.</returns>
         public XDocument ReadHeader()
         {
-            byte[] searchString = Encoding.UTF8.GetBytes("</QvdTableHeader>");
+            byte[] searchString = Encoding.UTF8.GetBytes("</QvdTableHeader>\r\n");
             using (MemoryStream bufferStream = new MemoryStream())
             {
                 int foundBytes = 0;
