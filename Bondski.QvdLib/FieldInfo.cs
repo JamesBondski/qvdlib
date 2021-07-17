@@ -27,7 +27,7 @@ namespace Bondski.QvdLib
         /// <summary>
         /// Gets the bias (?).
         /// </summary>
-        public int? Bias { get; init; } = 0;
+        public int Bias { get; init; } = 0;
 
         /// <summary>
         /// Gets information about the number format.
