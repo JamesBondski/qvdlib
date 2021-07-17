@@ -70,15 +70,14 @@ namespace Bondski.QvdLib
         {
             var fields = qvdTableHeaderElement
                 .XPathSelectElements("Fields/QvdFieldHeader")
-                .Select(qvdFieldHeaderElement => GetFieldInfo(qvdFieldHeaderElement))
-                .ToArray();
+                .Select(qvdFieldHeaderElement => GetFieldInfo(qvdFieldHeaderElement));
 
-            if (fields.Length == 0)
+            if (!fields.Any())
             {
                 throw new InvalidHeaderException("QVD header needs to have at least 1 field.");
             }
 
-            return fields;
+            return fields.OrderBy(f => f.BitOffset).ToArray();
         }
 
         private static FieldInfo GetFieldInfo(XElement element)

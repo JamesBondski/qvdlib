@@ -33,7 +33,7 @@
 
         private static Value ReadValue(BinaryReader reader)
         {
-            ValueType type = (ValueType)Enum.ToObject(typeof(ValueType), reader.ReadByte());
+            ValueType type = (ValueType)reader.ReadByte(); //(ValueType)Enum.ToObject(typeof(ValueType), reader.ReadByte());
 
             switch (type)
             {
@@ -74,9 +74,11 @@
             }
         }
 
+        private static byte[] buffer = new byte[64];
+
         private static string ReadString(BinaryReader reader)
         {
-            byte[] buffer = new byte[64];
+            //byte[] buffer = new byte[64];
             int pos = 0;
             byte nextByte = reader.ReadByte();
 
