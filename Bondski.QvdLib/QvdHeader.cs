@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="QvdHeader.cs" company="Matthias Kersting">
+// Copyright (c) Matthias Kersting. All rights reserved.
+// </copyright>
+
+using System;
 
 namespace Bondski.QvdLib
 {

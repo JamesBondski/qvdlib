@@ -1,7 +1,11 @@
-﻿using System;
+﻿// <copyright file="Value.cs" company="Matthias Kersting">
+// Copyright (c) Matthias Kersting. All rights reserved.
+// </copyright>
 
 namespace Bondski.QvdLib
 {
+    using System;
+
     /// <summary>
     /// Contains one value from the value table.
     /// </summary>
