@@ -6,6 +6,11 @@
     public enum ValueType
     {
         /// <summary>
+        /// Indicates a NULL value
+        /// </summary>
+        Null = 0,
+
+        /// <summary>
         /// Integer, 0x01 (4 bytes)
         /// </summary>
         Int = 1,

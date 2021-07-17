@@ -17,17 +17,17 @@ namespace Bondski.QvdLib
         /// <summary>
         /// Gets the offset in bits.
         /// </summary>
-        public int? BitOffset { get; init; }
+        public int BitOffset { get; init; }
 
         /// <summary>
         /// Gets the number of bits that represent one value.
         /// </summary>
-        public int? BitWidth { get; init; }
+        public int BitWidth { get; init; }
 
         /// <summary>
         /// Gets the bias (?).
         /// </summary>
-        public int? Bias { get; init; }
+        public int? Bias { get; init; } = 0;
 
         /// <summary>
         /// Gets information about the number format.
