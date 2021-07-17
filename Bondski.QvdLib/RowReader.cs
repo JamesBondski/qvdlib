@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿// <copyright file="RowReader.cs" company="Matthias Kersting">
+// Copyright (c) Matthias Kersting. All rights reserved.
+// </copyright>
 
 namespace Bondski.QvdLib
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    /// <summary>
+    /// Class for reading rows from an input stream.
+    /// </summary>
     internal class RowReader
     {
         private static readonly byte[] BitMasks = new byte[9]
@@ -21,16 +28,28 @@ namespace Bondski.QvdLib
         };
 
         private readonly QvdHeader header;
-        private readonly Dictionary<FieldInfo, Value[]> values;
-        private byte[] buffer;
+        private readonly List<Value[]> values;
+        private readonly byte[] buffer;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RowReader"/> class. The given dictionary
+        /// must be sorted by BitOffset.
+        /// </summary>
+        /// <param name="header">QVD header for the file.</param>
+        /// <param name="values">A dictionary with all values in the file.</param>
         public RowReader(QvdHeader header, Dictionary<FieldInfo, Value[]> values)
         {
             this.header = header;
-            this.values = values;
-            this.buffer = new byte[header.RecordByteSize];
+            this.buffer = new byte[this.header.RecordByteSize];
+            this.values = values.Select(kv => kv.Value).ToList();
         }
 
+        /// <summary>
+        /// Reads a row from the given stream. The Stream must be pointing to the beginning
+        /// of a record.
+        /// </summary>
+        /// <param name="input">Stream to read from.</param>
+        /// <returns>An array containing the values of the next row.</returns>
         public Value[] ReadRow(Stream input)
         {
             input.Read(this.buffer);
@@ -39,12 +58,12 @@ namespace Bondski.QvdLib
             int byteIndex = 0;
             int bitIndex = 0;
 
-            for(int i = 0; i < header.Fields.Length; i++)
+            for(int i = 0; i < this.header.Fields.Length; i++)
             {
-                int bitsLeft = header.Fields[i].BitWidth;
+                int bitsLeft = this.header..Fields[i].BitWidth;
                 int bitsRead = 0;
                 int valueIndex = 0;
-                
+
                 while (bitsLeft > 0)
                 {
                     int bitsToRead = Math.Min(8 - bitIndex, bitsLeft);
@@ -61,23 +80,26 @@ namespace Bondski.QvdLib
                     }
                     else
                     {
-                        buffer[byteIndex] = (byte)(buffer[byteIndex] >> bitsToRead);
+                        this.buffer[byteIndex] = (byte)(this.buffer[byteIndex] >> bitsToRead);
                     }
                 }
 
-                valueIndex += (int) header.Fields[i].Bias;
-                if(valueIndex != -2)
+                valueIndex += (int)this.header.Fields[i].Bias;
+                if (valueIndex != -2)
                 {
-                    rowData[fieldIndex++] = this.values[header.Fields[i]][valueIndex];
+                    rowData[fieldIndex] = this.values[fieldIndex][valueIndex];
                 }
                 else
                 {
-                    rowData[fieldIndex++] = new Value()
+                    rowData[fieldIndex] = new Value()
                     {
                         Type = ValueType.Null,
                     };
                 }
+
+                fieldIndex++;
             }
+
             return rowData;
         }
     }
