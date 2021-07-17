@@ -1,4 +1,8 @@
-﻿namespace Bondski.QvdLib
+﻿// <copyright file="ValueReader.cs" company="Matthias Kersting">
+// Copyright (c) Matthias Kersting. All rights reserved.
+// </copyright>
+
+namespace Bondski.QvdLib
 {
     using System;
     using System.IO;

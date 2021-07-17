@@ -1,4 +1,8 @@
-﻿namespace Bondski.QvdLib
+﻿// <copyright file="ValueType.cs" company="Matthias Kersting">
+// Copyright (c) Matthias Kersting. All rights reserved.
+// </copyright>
+
+namespace Bondski.QvdLib
 {
     /// <summary>
     /// Enum detailing what kind of value it is.
