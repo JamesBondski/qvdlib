@@ -7,7 +7,7 @@ namespace Bondski.QvdLib
         /// <summary>
         /// Gets the field information from the QVD header.
         /// </summary>
-        public FieldInfo[]? Fields { get; init; }
+        public FieldInfo[] Fields { get; init; } = Array.Empty<FieldInfo>();
 
         /// <summary>
         /// Gets the build number of the Qlik engine used to produce the QVD.

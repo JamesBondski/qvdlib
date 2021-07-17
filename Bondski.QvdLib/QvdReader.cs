@@ -13,6 +13,7 @@
         private Value[]? currentRow = null;
         private RowReader reader;
         private FileStream input;
+        private Dictionary<string, int> fieldIndices = new Dictionary<string, int>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QvdReader"/> class.
@@ -24,6 +25,13 @@
             var headerXml = new HeaderExtractor(this.input).ReadHeader();
             this.Header = new HeaderParser(headerXml).Header;
 
+            // Populate field indices for faster lookup
+            int fieldIndex = 0;
+            foreach (FieldInfo field in this.Header.Fields)
+            {
+                this.fieldIndices.Add(field.Name, fieldIndex++);
+            }
+
             // Skip 1 byte
             this.input.Seek(1, SeekOrigin.Current);
 
@@ -33,6 +41,41 @@
             }
 
             this.reader = new RowReader(this.Header, this.Values);
+        }
+
+        /// <summary>
+        /// Gets the value at the specified index in the current row.
+        /// </summary>
+        /// <param name="fieldIndex">Index of the field.</param>
+        /// <returns>Value at the specified index.</returns>
+        public Value this[int fieldIndex]
+        {
+            get
+            {
+                if (this.currentRow == null)
+                {
+                    throw new InvalidOperationException("No row has been read yet.");
+                }
+
+                return this.currentRow[fieldIndex]; 
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of the field with the specified name.
+        /// </summary>
+        /// <param name="fieldName">Name of the field.</param>
+        /// <returns>Value of the field with the specified name.</returns>
+        public Value this[string fieldName]
+        {
+            get {
+                if (this.currentRow == null)
+                {
+                    throw new InvalidOperationException("No row has been read yet.");
+                }
+
+                return this.currentRow[this.fieldIndices[fieldName]];
+            }
         }
 
         /// <summary>
