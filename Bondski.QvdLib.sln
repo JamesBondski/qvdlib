@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bondski.QvdLib", "Bondski.Q
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bondski.QvdLib.Tests", "Bondski.QvdLib.Tests\Bondski.QvdLib.Tests.csproj", "{79953156-BE09-499E-8142-17E322A00417}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{03FB2A4F-A4B3-4119-9A38-396F5BB948AA}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{79953156-BE09-499E-8142-17E322A00417}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79953156-BE09-499E-8142-17E322A00417}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79953156-BE09-499E-8142-17E322A00417}.Release|Any CPU.Build.0 = Release|Any CPU
-		{03FB2A4F-A4B3-4119-9A38-396F5BB948AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{03FB2A4F-A4B3-4119-9A38-396F5BB948AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{03FB2A4F-A4B3-4119-9A38-396F5BB948AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{03FB2A4F-A4B3-4119-9A38-396F5BB948AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
