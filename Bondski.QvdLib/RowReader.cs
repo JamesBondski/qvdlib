@@ -58,9 +58,9 @@ namespace Bondski.QvdLib
             int byteIndex = 0;
             int bitIndex = 0;
 
-            for(int i = 0; i < this.header.Fields.Length; i++)
+            for (int i = 0; i < this.header.Fields.Length; i++)
             {
-                int bitsLeft = this.header..Fields[i].BitWidth;
+                int bitsLeft = this.header.Fields[i].BitWidth;
                 int bitsRead = 0;
                 int valueIndex = 0;
 

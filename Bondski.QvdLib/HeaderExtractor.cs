@@ -1,4 +1,4 @@
-﻿// <copyright file="HeaderReader.cs" company="Matthias Kersting">
+﻿// <copyright file="HeaderExtractor.cs" company="Matthias Kersting">
 // Copyright (c) Matthias Kersting. All rights reserved.
 // </copyright>
 
@@ -80,7 +80,6 @@ namespace Bondski.QvdLib
                 bufferStream.Seek(0, SeekOrigin.Begin);
                 this.headerDocument = XDocument.Load(bufferStream);
                 this.IsRead = true;
-                this.headerDocument.Save(@"C:\Temp\bigHeader.xml");
                 return this.headerDocument;
             }
         }

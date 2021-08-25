@@ -48,6 +48,16 @@ namespace Bondski.QvdLib
         }
 
         /// <summary>
+        /// Gets the Header information from the read qvd.
+        /// </summary>
+        public QvdHeader Header { get; init; }
+
+        /// <summary>
+        /// Gets the values from the value section of the qvd.
+        /// </summary>
+        public Dictionary<FieldInfo, Value[]> Values { get; init; } = new Dictionary<FieldInfo, Value[]>();
+
+        /// <summary>
         /// Gets the value at the specified index in the current row.
         /// </summary>
         /// <param name="fieldIndex">Index of the field.</param>
@@ -61,7 +71,7 @@ namespace Bondski.QvdLib
                     throw new InvalidOperationException("No row has been read yet.");
                 }
 
-                return this.currentRow[fieldIndex]; 
+                return this.currentRow[fieldIndex];
             }
         }
 
@@ -72,7 +82,8 @@ namespace Bondski.QvdLib
         /// <returns>Value of the field with the specified name.</returns>
         public Value this[string fieldName]
         {
-            get {
+            get
+            {
                 if (this.currentRow == null)
                 {
                     throw new InvalidOperationException("No row has been read yet.");
@@ -115,15 +126,5 @@ namespace Bondski.QvdLib
         {
             this.input.Dispose();
         }
-
-        /// <summary>
-        /// Gets the Header information from the read qvd.
-        /// </summary>
-        public QvdHeader Header { get; init; }
-
-        /// <summary>
-        /// Gets the values from the value section of the qvd.
-        /// </summary>
-        public Dictionary<FieldInfo, Value[]> Values { get; init; } = new Dictionary<FieldInfo, Value[]>();
     }
 }

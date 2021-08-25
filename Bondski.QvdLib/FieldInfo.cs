@@ -54,7 +54,9 @@ namespace Bondski.QvdLib
         /// </summary>
         public string? Comment { get; init; }
 
+        /// <summary>
+        /// Gets a list of all tags associated with the field.
+        /// </summary>
         public string[]? Tags { get; init; }
     }
 }
-

@@ -1,4 +1,4 @@
-﻿// <copyright file="QvdHeader.cs" company="Matthias Kersting">
+﻿// <copyright file="HeaderParser.cs" company="Matthias Kersting">
 // Copyright (c) Matthias Kersting. All rights reserved.
 // </copyright>
 
@@ -136,17 +136,18 @@ namespace Bondski.QvdLib
         private static DateTime? GetDateTime(XElement element, string elementName)
         {
             DateTime? result = Get<DateTime>(element, elementName);
-            if(result == default(DateTime))
+            if (result == default(DateTime))
             {
                 return null;
             }
+
             return result;
         }
 
         private static string[]? GetStringList(XElement element, string elementName, string subElementName)
         {
             XElement? xElement = element.Element(elementName);
-            if(xElement == null || string.IsNullOrEmpty(xElement.Value))
+            if (xElement == null || string.IsNullOrEmpty(xElement.Value))
             {
                 return null;
             }
