@@ -82,7 +82,7 @@ namespace Bondski.QvdLib
         /// representation will be used.
         /// </summary>
         /// <returns>The value as a string.</returns>
-        public override string ToString()
+        public override string? ToString()
         {
             switch (this.Type)
             {
@@ -95,7 +95,7 @@ namespace Bondski.QvdLib
                 case ValueType.Double:
                     return this.Double.ToString();
                 case ValueType.Null:
-                    return "NULL";
+                    return null;
                 default:
                     throw new InvalidValueException("Value has an unknown Type.");
             }

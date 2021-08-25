@@ -58,5 +58,18 @@ namespace Bondski.QvdLib.Tests
             Assert.Equal(1.1, val.Double);
             Assert.Equal(0, val.Int);
         }
+
+        [Fact]
+        public void ReadNullTest()
+        {
+            // Skip to third row
+            reader.NextRow();
+            reader.NextRow();
+
+            Value val = reader["StringColumn"];
+            Assert.Equal(ValueType.Null, val.Type);
+            Assert.Null(val.String);
+            Assert.Null(val.ToString());
+        }
     }
 }
