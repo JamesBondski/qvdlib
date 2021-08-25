@@ -94,6 +94,8 @@ namespace Bondski.QvdLib
                     return this.Int.ToString();
                 case ValueType.Double:
                     return this.Double.ToString();
+                case ValueType.Null:
+                    return "NULL";
                 default:
                     throw new InvalidValueException("Value has an unknown Type.");
             }
