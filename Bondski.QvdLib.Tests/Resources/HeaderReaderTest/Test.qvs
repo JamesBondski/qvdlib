@@ -27,19 +27,13 @@ B,2,"2,2"
 ,1,"1,1"
 ];
 
-LEFT JOIN(Test) LOAD
-	StringColumn
-RESIDENT Test;
-
 TestData:
 NOCONCATENATE Load
 	StringColumn,
-    IntColumn,
-    Dual(StringColumn, IntColumn) AS DualIntColumn,
-    DoubleColumn,
-    Dual(StringColumn, DoubleColumn) AS DualDoubleColumn
+    if(len(StringColumn)>0,Dual(StringColumn, IntColumn)) AS DualIntColumn,
+    if(len(StringColumn)>0,Dual(StringColumn, DoubleColumn)) AS DualDoubleColumn
 ;
-LOAD if(len(StringColumn)>0,StringColumn) AS StringColumn, IntColumn, num#(DoubleColumn) AS DoubleColumn RESIDENT Test;
+LOAD if(len(StringColumn)>0,StringColumn) AS StringColumn, num#(IntColumn) AS IntColumn, num#(DoubleColumn) AS DoubleColumn RESIDENT Test;
 
 DROP TABLE Test;
 RENAME TABLE TestData TO Test;
