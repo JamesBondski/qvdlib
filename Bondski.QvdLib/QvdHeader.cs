@@ -2,10 +2,10 @@
 // Copyright (c) Matthias Kersting. All rights reserved.
 // </copyright>
 
-using System;
-
 namespace Bondski.QvdLib
 {
+    using System;
+
     public record QvdHeader
     {
         /// <summary>
@@ -24,7 +24,7 @@ namespace Bondski.QvdLib
         public string? CreatorDoc { get; init; }
 
         /// <summary>
-        /// Gets the time of Creation
+        /// Gets the time of creation of the document.
         /// </summary>
         public DateTime? CreateTime { get; init; }
 
@@ -37,7 +37,7 @@ namespace Bondski.QvdLib
         /// Gets the file time of the source file.
         /// </summary>
         public DateTime? SourceFileTime { get; init; }
-        
+
         /// <summary>
         /// Gets the size of the source file.
         /// </summary>

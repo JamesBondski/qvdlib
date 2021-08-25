@@ -14,6 +14,7 @@ namespace Bondski.QvdLib
     internal static class ValueReader
     {
         private static readonly int MaxBufferSize = 1048576;
+        private static byte[] buffer = new byte[64];
 
         /// <summary>
         /// Reads the values of one field from the QVD. The given field must correspond to the next data, there is no way to verify that.
@@ -32,12 +33,13 @@ namespace Bondski.QvdLib
                     values[i] = ReadValue(reader);
                 }
             }
+
             return values;
         }
 
         private static Value ReadValue(BinaryReader reader)
         {
-            ValueType type = (ValueType)reader.ReadByte(); //(ValueType)Enum.ToObject(typeof(ValueType), reader.ReadByte());
+            ValueType type = (ValueType)reader.ReadByte();
 
             switch (type)
             {
@@ -78,11 +80,8 @@ namespace Bondski.QvdLib
             }
         }
 
-        private static byte[] buffer = new byte[64];
-
         private static string ReadString(BinaryReader reader)
         {
-            //byte[] buffer = new byte[64];
             int pos = 0;
             byte nextByte = reader.ReadByte();
 
@@ -101,6 +100,7 @@ namespace Bondski.QvdLib
                         throw new InvalidValueException("String is longer than max length (" + MaxBufferSize + ")");
                     }
                 }
+
                 nextByte = reader.ReadByte();
             }
 

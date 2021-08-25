@@ -99,6 +99,4 @@ namespace Bondski.QvdLib
             }
         }
     }
-
-    
 }
