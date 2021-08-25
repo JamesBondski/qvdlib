@@ -77,7 +77,7 @@ namespace Bondski.QvdLib
                 throw new InvalidHeaderException("QVD header needs to have at least 1 field.");
             }
 
-            return fields.OrderBy(f => f.BitOffset).ToArray();
+            return fields.ToArray();
         }
 
         private static FieldInfo GetFieldInfo(XElement element)
@@ -85,7 +85,7 @@ namespace Bondski.QvdLib
             return new FieldInfo()
             {
                 Name = GetRequired<string>(element, "FieldName"),
-                BitOffset = Get<int>(element, "BitOffset"),
+                BitOffset = GetRequired<int>(element, "BitOffset"),
                 BitWidth = Get<int>(element, "BitWidth"),
                 Bias = Get<int>(element, "Bias"),
                 NumberFormat = GetNumberFormat(element.Element("NumberFormat")),
