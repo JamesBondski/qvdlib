@@ -7,6 +7,7 @@ namespace Bondski.QvdLib
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
 
     /// <summary>
     /// This class is the starting point for users of this library. Each instance will deal with reading information and data from
@@ -29,7 +30,7 @@ namespace Bondski.QvdLib
             var headerXml = new HeaderExtractor(this.input).ReadHeader();
             this.Header = new HeaderParser(headerXml).Header;
 
-            // Populate field indices for faster lookup
+            // Populate field indices for faster lookup in the order given by the header.
             int fieldIndex = 0;
             foreach (FieldInfo field in this.Header.Fields)
             {
@@ -39,7 +40,8 @@ namespace Bondski.QvdLib
             // Skip 1 byte
             this.input.Seek(1, SeekOrigin.Current);
 
-            foreach (var field in this.Header.Fields)
+            // Need to order our values by BitOffset here.
+            foreach (var field in this.Header.Fields.OrderBy(f => f.BitOffset))
             {
                 this.Values.Add(field, ValueReader.ReadValues(field, this.input));
             }
@@ -87,6 +89,11 @@ namespace Bondski.QvdLib
                 if (this.currentRow == null)
                 {
                     throw new InvalidOperationException("No row has been read yet.");
+                }
+
+                if (!this.fieldIndices.ContainsKey(fieldName))
+                {
+                    throw new ArgumentException("Field " + fieldName + " not found.");
                 }
 
                 return this.currentRow[this.fieldIndices[fieldName]];

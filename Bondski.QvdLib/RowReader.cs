@@ -30,6 +30,7 @@ namespace Bondski.QvdLib
         private readonly QvdHeader header;
         private readonly List<Value[]> values;
         private readonly byte[] buffer;
+        private readonly FieldInfo[] fields;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RowReader"/> class. The given dictionary
@@ -42,6 +43,7 @@ namespace Bondski.QvdLib
             this.header = header;
             this.buffer = new byte[this.header.RecordByteSize];
             this.values = values.Select(kv => kv.Value).ToList();
+            this.fields = this.header.Fields.OrderBy(f => f.BitOffset).ToArray();
         }
 
         /// <summary>
@@ -58,9 +60,9 @@ namespace Bondski.QvdLib
             int byteIndex = 0;
             int bitIndex = 0;
 
-            for (int i = 0; i < this.header.Fields.Length; i++)
+            for (int i = 0; i < this.fields.Length; i++)
             {
-                int bitsLeft = this.header.Fields[i].BitWidth;
+                int bitsLeft = this.fields[i].BitWidth;
                 int bitsRead = 0;
                 int valueIndex = 0;
 
@@ -84,7 +86,7 @@ namespace Bondski.QvdLib
                     }
                 }
 
-                valueIndex += (int)this.header.Fields[i].Bias;
+                valueIndex += (int)this.fields[i].Bias;
                 if (valueIndex != -2)
                 {
                     rowData[fieldIndex] = this.values[fieldIndex][valueIndex];
