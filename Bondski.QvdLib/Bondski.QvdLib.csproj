@@ -1,17 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Description>A library for reading the header information from QlikView Data files.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>A library for reading from QlikView Data files.</Description>
     <PackageProjectUrl>https://github.com/JamesBondski/qvdlib</PackageProjectUrl>
     <PackageLicenseExpression>	Apache-2.0</PackageLicenseExpression>
     <PackageTags>Qlik QlikView QVD</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/JamesBondski/qvdlib.git</RepositoryUrl>
     <Authors>Matthias Kersting</Authors>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
