@@ -1,0 +1,47 @@
+﻿// Qlik Script to recreate the Test.qvd file.
+SET ThousandSep='.';
+SET DecimalSep=',';
+SET MoneyThousandSep='.';
+SET MoneyDecimalSep=',';
+SET MoneyFormat='#.##0,00 €;-#.##0,00 €';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD.MM.YYYY';
+SET TimestampFormat='DD.MM.YYYY hh:mm:ss[.fff]';
+SET FirstWeekDay=0;
+SET BrokenWeeks=0;
+SET ReferenceDay=4;
+SET FirstMonthOfYear=1;
+SET CollationLocale='de-DE';
+SET CreateSearchIndexOnReload=1;
+SET MonthNames='Jan.;Feb.;März;Apr.;Mai;Juni;Juli;Aug.;Sep.;Okt.;Nov.;Dez.';
+SET LongMonthNames='Januar;Februar;März;April;Mai;Juni;Juli;August;September;Oktober;November;Dezember';
+SET DayNames='Mo.;Di.;Mi.;Do.;Fr.;Sa.;So.';
+SET LongDayNames='Montag;Dienstag;Mittwoch;Donnerstag;Freitag;Samstag;Sonntag';
+SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
+
+Test:
+NOCONCATENATE LOAD * INLINE [
+StringColumn,IntColumn,DoubleColumn
+A,1,"1,1"
+B,2,"2,2"
+,1,"1,1"
+];
+
+LEFT JOIN(Test) LOAD
+	StringColumn
+RESIDENT Test;
+
+TestData:
+NOCONCATENATE Load
+	StringColumn,
+    IntColumn,
+    Dual(StringColumn, IntColumn) AS DualIntColumn,
+    DoubleColumn,
+    Dual(StringColumn, DoubleColumn) AS DualDoubleColumn
+;
+LOAD if(len(StringColumn)>0,StringColumn) AS StringColumn, IntColumn, num#(DoubleColumn) AS DoubleColumn RESIDENT Test;
+
+DROP TABLE Test;
+RENAME TABLE TestData TO Test;
+
+STORE * FROM Test INTO lib://QvdLib-Tests/HeaderReaderTest/Test.qvd (qvd);
