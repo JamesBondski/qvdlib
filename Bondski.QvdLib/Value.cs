@@ -37,7 +37,7 @@ namespace Bondski.QvdLib
         /// is a dual value, the numeric representation will be used.
         /// </summary>
         /// <returns>Returns the integer value.</returns>
-        public int ToInt()
+        public int? ToInt()
         {
             switch (this.Type)
             {
@@ -49,6 +49,8 @@ namespace Bondski.QvdLib
                     return Convert.ToInt32(this.Double);
                 case ValueType.String:
                     return Convert.ToInt32(this.String);
+                case ValueType.Null:
+                    return null;
                 default:
                     throw new InvalidValueException("Value has an unknown Type.");
             }
@@ -60,7 +62,7 @@ namespace Bondski.QvdLib
         /// is a dual value, the numeric representation will be used.
         /// </summary>
         /// <returns>Returns the double value.</returns>
-        public double ToDouble()
+        public double? ToDouble()
         {
             switch (this.Type)
             {
@@ -72,6 +74,8 @@ namespace Bondski.QvdLib
                     return Convert.ToDouble(this.Int);
                 case ValueType.String:
                     return Convert.ToDouble(this.String);
+                case ValueType.Null:
+                    return null;
                 default:
                     throw new InvalidValueException("Value has an unknown Type.");
             }
