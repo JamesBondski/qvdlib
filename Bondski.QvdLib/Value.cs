@@ -32,12 +32,74 @@ namespace Bondski.QvdLib
         public readonly ValueType Type { get; init; }
 
         /// <summary>
+        /// Returns the integer value if the Value is of Type Int or DualInt. No conversions are done.
+        /// </summary>
+        /// <returns>Returns the integer value.</returns>
+        /// <exception cref="InvalidValueException">Thrown if the Value is not of Type Int or DualInt.</exception>
+        public int? AsInt()
+        {
+            if (this.Type == ValueType.Int || this.Type == ValueType.DualInt)
+            {
+                return this.Int;
+            }
+
+            if (this.Type == ValueType.Null)
+            {
+                return null;
+            }
+
+            throw new InvalidValueException("Value is not an Integer.");
+        }
+
+        /// <summary>
+        /// Returns the double value if the Value is of Type Double or DualDouble. No conversions are done.
+        /// </summary>
+        /// <returns>Returns the double value.</returns>
+        /// <exception cref="InvalidValueException">Thrown if the Value is not of Type Double or DualDouble.</exception>
+        public double? AsDouble()
+        {
+            if (this.Type == ValueType.Double || this.Type == ValueType.DualDouble)
+            {
+                return this.Double;
+            }
+
+            if (this.Type == ValueType.Null)
+            {
+                return null;
+            }
+
+            throw new InvalidValueException("Value is not a Double.");
+        }
+
+        /// <summary>
+        /// Returns the string value if the Value is of Type String, DualInt or DualDouble. No conversions are done.
+        /// </summary>
+        /// <returns>Returns the string value.</returns>
+        /// <exception cref="InvalidValueException">Thrown if the Value is not of Type String, DualInt or DualDouble.</exception>
+        public string? AsString()
+        {
+            if (this.Type == ValueType.String || this.Type == ValueType.DualInt || this.Type == ValueType.DualDouble)
+            {
+                return this.String;
+            }
+
+            if (this.Type == ValueType.Null)
+            {
+                return null;
+            }
+
+            throw new InvalidValueException("Value does not have a string representation.");
+        }
+
+        /// <summary>
         /// Returns the value as an integer. This will attempt to convert from
         /// double or string if possible using System.Convert.ToInt32. If the value
         /// is a dual value, the numeric representation will be used.
         /// </summary>
-        /// <returns>Returns the integer value.</returns>
-        public int? ToInt()
+        /// <param name="convertFromString">Indicates whether string values should be converted to integers.</param>
+        /// <returns>Returns the integer value which may have been converted.</returns>
+        /// <exception cref="InvalidValueException">Thrown if convertFromString is false and the value is a string or if the value has an unhandled type.</exception>
+        public int? ToInt(bool convertFromString = false)
         {
             switch (this.Type)
             {
@@ -48,7 +110,15 @@ namespace Bondski.QvdLib
                 case ValueType.DualDouble:
                     return Convert.ToInt32(this.Double);
                 case ValueType.String:
-                    return Convert.ToInt32(this.String);
+                    if (convertFromString)
+                    {
+                        return Convert.ToInt32(this.String);
+                    }
+                    else
+                    {
+                        throw new InvalidValueException("Value '" + this.String + "' could not be converted to integer.");
+                    }
+
                 case ValueType.Null:
                     return null;
                 default:
@@ -61,8 +131,10 @@ namespace Bondski.QvdLib
         /// int or string if possible using System.Convert.ToDouble. If the value
         /// is a dual value, the numeric representation will be used.
         /// </summary>
+        /// <param name="convertFromString">Indicates whether string values should be converted to doubles.</param>
         /// <returns>Returns the double value.</returns>
-        public double? ToDouble()
+        /// <exception cref="InvalidValueException">Thrown if convertFromString is false and the value is a string or if the value has an unhandled type.</exception>
+        public double? ToDouble(bool convertFromString = false)
         {
             switch (this.Type)
             {
@@ -73,7 +145,15 @@ namespace Bondski.QvdLib
                 case ValueType.DualInt:
                     return Convert.ToDouble(this.Int);
                 case ValueType.String:
-                    return Convert.ToDouble(this.String);
+                    if (convertFromString)
+                    {
+                        return Convert.ToDouble(this.String);
+                    }
+                    else
+                    {
+                        throw new InvalidValueException("Value '" + this.String + "' could not be converted to integer.");
+                    }
+
                 case ValueType.Null:
                     return null;
                 default:
