@@ -31,15 +31,25 @@ There are the followng types in Qlik:
 
 For performance reasons, Integer and Double values are always stored as primitives, so they are not nullable. So if you want to use the properties for Int and Double, you have to check the type of the value yourself to handle null values correctly.
 
-The recommended way is to use the corresponding toX-method as this will handle null values for you. It will use the type of value closest to what you are expecting (i.e. if you use a ToInt() on a Dual Double, it will convert the double value into an integer, **if you use it on a String, it will try to convert that into an integer**). It is using Convert.ToX for all conversions.
+The recommended way is to use the appropriate AsX- and ToX- methods provided by the Value class. These work as follows:
 
-For the future, I am planning to implement a way to better customize which of these conversions should be done automatically and how errors are supposed to be handled. 
+| |String|Int|Double|DualInt|DualDouble|Null|
+|---|---|---|---|---|---|---|
+|AsString|X|-|-|X|X|(null)|
+|AsInt|-|X|-|X|-|(null)|
+|AsDouble|-|-|X|-|X|(null)|
+|ToString|X|X|X|X|X|(null)|
+|ToInt(true)|X|X|X|X|X|(null)|
+|ToInt(false)|-|X|X|X|X|(null)|
+|ToDouble(true)|X|X|X|X|X|(null)|
+|ToDouble(false)|-|X|X|X|X|(null)|
+
+For dual types, both AsX- and ToX- methods will use either the numeric or the string representation. The ToX-methods use System.Convert for conversions.
 
 ## Roadmap
 For now, the library does what it is supposed to, it reads qvd files. Right now, I am mostly looking to:
 - test the library on as many qvds as possible and fix any issues that come up. If you have a file that is not read correctly, please open an issue.
 - Improving the unit test coverage (especially for value reading there are quite a few holes)
-- Better handling of different types of values (see "Getting started")
 - A few optimizations
 
 Maybe, at some point in the future, I will implement writing qvd files.
