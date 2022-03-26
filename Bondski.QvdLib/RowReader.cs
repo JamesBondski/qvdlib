@@ -28,7 +28,7 @@ namespace Bondski.QvdLib
         };
 
         private readonly QvdHeader header;
-        private readonly List<Value[]> values;
+        private readonly List<IList<Value>> values;
         private readonly byte[] buffer;
         private readonly FieldInfo[] fields;
 
@@ -38,7 +38,7 @@ namespace Bondski.QvdLib
         /// </summary>
         /// <param name="header">QVD header for the file.</param>
         /// <param name="values">A dictionary with all values in the file.</param>
-        public RowReader(QvdHeader header, Dictionary<FieldInfo, Value[]> values)
+        public RowReader(QvdHeader header, Dictionary<FieldInfo, IList<Value>> values)
         {
             this.header = header;
             this.buffer = new byte[this.header.RecordByteSize];

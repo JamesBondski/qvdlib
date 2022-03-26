@@ -57,7 +57,7 @@ namespace Bondski.QvdLib
         /// <summary>
         /// Gets the values from the value section of the qvd.
         /// </summary>
-        public Dictionary<FieldInfo, Value[]> Values { get; init; } = new Dictionary<FieldInfo, Value[]>();
+        public Dictionary<FieldInfo, IList<Value>> Values { get; init; } = new Dictionary<FieldInfo, IList<Value>>();
 
         /// <summary>
         /// Gets the value at the specified index in the current row.
