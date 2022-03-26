@@ -66,26 +66,34 @@ namespace Bondski.QvdLib
                 int bitsRead = 0;
                 int valueIndex = 0;
 
+                // Read byte for byte until we have enough bits
                 while (bitsLeft > 0)
                 {
                     int bitsToRead = Math.Min(8 - bitIndex, bitsLeft);
                     int bitValue = this.buffer[byteIndex] & BitMasks[bitsToRead];
+
+                    // Add read bits to value index
                     valueIndex = valueIndex | (bitValue << bitsRead);
                     bitsLeft -= bitsToRead;
                     bitsRead += bitsToRead;
 
+                    // Advance indices for reading
                     bitIndex += bitsToRead;
                     if (bitIndex == 8)
                     {
+                        // If the rest of the byte was read, simply proceed to the next one.
                         byteIndex++;
                         bitIndex = 0;
                     }
                     else
                     {
+                        // Otherwise shift the value so the remaining bits will be read next iteration
                         this.buffer[byteIndex] = (byte)(this.buffer[byteIndex] >> bitsToRead);
                     }
                 }
 
+                // Adjust the read value index using the Bias from the QVD header
+                // If it is a null value, the result after applying the bias is -2
                 valueIndex += (int)this.fields[i].Bias;
                 if (valueIndex != -2)
                 {
