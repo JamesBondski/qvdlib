@@ -42,7 +42,9 @@ namespace Bondski.QvdLib
         {
             this.header = header;
             this.buffer = new byte[this.header.RecordByteSize];
-            this.values = values.Select(kv => kv.Value).ToList();
+
+            // Make sure both the fields and the values are sorted by the BitOffset of the field
+            this.values = values.OrderBy(f => f.Key.BitOffset).Select(kv => kv.Value).ToList();
             this.fields = this.header.Fields.OrderBy(f => f.BitOffset).ToArray();
         }
 

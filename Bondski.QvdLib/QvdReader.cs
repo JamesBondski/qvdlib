@@ -40,8 +40,8 @@ namespace Bondski.QvdLib
             // Skip 1 byte
             this.input.Seek(1, SeekOrigin.Current);
 
-            // Need to order our values by BitOffset here.
-            foreach (var field in this.Header.Fields.OrderBy(f => f.BitOffset))
+            // Read the values (in the order of the fields in the header)
+            foreach (var field in this.Header.Fields)
             {
                 this.Values.Add(field, ValueReader.ReadValues(field, this.input));
             }
