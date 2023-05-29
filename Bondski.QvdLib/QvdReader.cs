@@ -6,8 +6,10 @@ namespace Bondski.QvdLib
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.IO;
     using System.Linq;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// This class is the starting point for users of this library. Each instance will deal with reading information and data from
@@ -106,13 +108,24 @@ namespace Bondski.QvdLib
         /// <returns>Returns true, if there are more records, otherwise false.</returns>
         public bool NextRow()
         {
+            var task = this.NextRowAsync();
+            task.Wait();
+            return task.Result;
+        }
+
+        /// <summary>
+        /// Reads the next row.
+        /// </summary>
+        /// <returns>Returns true, if there are more records, otherwise false.</returns>
+        public async Task<bool> NextRowAsync()
+        {
             if (this.input.Position == this.input.Length)
             {
                 return false;
             }
             else
             {
-                this.currentRow = this.reader.ReadRow(this.input);
+                this.currentRow = await this.reader.ReadRowAsync(this.input);
                 return true;
             }
         }
