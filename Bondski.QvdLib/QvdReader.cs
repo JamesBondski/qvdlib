@@ -121,8 +121,14 @@ namespace Bondski.QvdLib
         /// Gets the raw values of the current row.
         /// </summary>
         /// <returns>An array containing the values in the current row.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if no row has been read yet.</exception>
         public Value[] GetValues()
         {
+            if (this.currentRow == null)
+            {
+                throw new InvalidOperationException("No row has been read yet.");
+            }
+
             return this.currentRow;
         }
 
