@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30128.74
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bondski.QvdLib", "Bondski.QvdLib\Bondski.QvdLib.csproj", "{5B1BE07E-358F-45A0-8A7A-DE443CF3279D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bondski.QvdLib.Tests", "Bondski.QvdLib.Tests\Bondski.QvdLib.Tests.csproj", "{79953156-BE09-499E-8142-17E322A00417}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bondski.QvdLib.Benchmark", "Bondski.QvdLib.Benchmark\Bondski.QvdLib.Benchmark.csproj", "{003A0909-C738-4040-9453-AD06C859FFC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{79953156-BE09-499E-8142-17E322A00417}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79953156-BE09-499E-8142-17E322A00417}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79953156-BE09-499E-8142-17E322A00417}.Release|Any CPU.Build.0 = Release|Any CPU
+		{003A0909-C738-4040-9453-AD06C859FFC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{003A0909-C738-4040-9453-AD06C859FFC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{003A0909-C738-4040-9453-AD06C859FFC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{003A0909-C738-4040-9453-AD06C859FFC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
