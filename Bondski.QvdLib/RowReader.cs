@@ -49,6 +49,21 @@ namespace Bondski.QvdLib
         }
 
         /// <summary>
+        /// Returns the sorted indices
+        /// </summary>
+        /// <returns>A dictionary with name an postion based on the sorted fields</returns>
+        public Dictionary<string, int> GetFieldIndices()
+        {
+            Dictionary<string, int> retVal = new Dictionary<string, int>();
+
+            for (int i = 0; i < this.fields.Length; i++)
+            {
+                retVal.Add(this.fields[i].Name, i);
+            }
+            return retVal;
+        }
+
+        /// <summary>
         /// Reads a row from the given stream. The Stream must be pointing to the beginning
         /// of a record.
         /// </summary>
