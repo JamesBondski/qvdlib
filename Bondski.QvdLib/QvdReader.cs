@@ -18,7 +18,7 @@ namespace Bondski.QvdLib
         private Value[]? currentRow = null;
         private RowReader reader;
         private FileStream input;
-        private Dictionary<string, int> fieldIndices = new Dictionary<string, int>();
+        private Dictionary<string, int> fieldIndices;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QvdReader"/> class.
@@ -30,13 +30,6 @@ namespace Bondski.QvdLib
             var headerXml = new HeaderExtractor(this.input).ReadHeader();
             this.Header = new HeaderParser(headerXml).Header;
 
-            // Populate field indices for faster lookup in the order given by the header.
-            int fieldIndex = 0;
-            foreach (FieldInfo field in this.Header.Fields)
-            {
-                this.fieldIndices.Add(field.Name, fieldIndex++);
-            }
-
             // Skip 1 byte
             this.input.Seek(1, SeekOrigin.Current);
 
@@ -47,6 +40,9 @@ namespace Bondski.QvdLib
             }
 
             this.reader = new RowReader(this.Header, this.Values);
+
+            // Populate field indices for faster lookup in the order given by the header.
+            this.fieldIndices = this.reader.GetFieldIndices();
         }
 
         /// <summary>
