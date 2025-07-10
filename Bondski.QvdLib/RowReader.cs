@@ -56,7 +56,7 @@ namespace Bondski.QvdLib
         /// <returns>An array containing the values of the next row.</returns>
         public Value[] ReadRow(Stream input)
         {
-            input.Read(this.buffer);
+            input.ReadExactly(this.buffer);
             Value[] rowData = new Value[this.values.Count];
             int fieldIndex = 0;
             int byteIndex = 0;

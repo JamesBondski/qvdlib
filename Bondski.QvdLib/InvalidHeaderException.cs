@@ -9,7 +9,6 @@ namespace Bondski.QvdLib
     /// <summary>
     /// Exception thrown when the header of the qvd file is invalid.
     /// </summary>
-    [Serializable]
     public class InvalidHeaderException : Exception
     {
         /// <summary>
@@ -35,18 +34,6 @@ namespace Bondski.QvdLib
         /// <param name="inner">Inner exception.</param>
         public InvalidHeaderException(string message, Exception inner)
             : base(message, inner)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidHeaderException"/> class.
-        /// </summary>
-        /// <param name="info">SerializationInfo object.</param>
-        /// <param name="context">StreamingContext object.</param>
-        protected InvalidHeaderException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context)
-            : base(info, context)
         {
         }
     }

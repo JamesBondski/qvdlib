@@ -9,7 +9,6 @@ namespace Bondski.QvdLib
     /// <summary>
     /// Exception thrown when the a value in the value section of the QVD is invalid.
     /// </summary>
-    [Serializable]
     public class InvalidValueException : Exception
     {
         /// <summary>
@@ -35,18 +34,6 @@ namespace Bondski.QvdLib
         /// <param name="inner">Inner exception.</param>
         public InvalidValueException(string message, Exception inner)
             : base(message, inner)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidValueException"/> class.
-        /// </summary>
-        /// <param name="info">SerializationInfo object.</param>
-        /// <param name="context">StreamingContext object.</param>
-        protected InvalidValueException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context)
-            : base(info, context)
         {
         }
     }
