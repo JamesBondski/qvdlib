@@ -41,7 +41,7 @@ namespace Bondski.QvdLib
 
             this.reader = new RowReader(this.Header, this.Values);
 
-            // Populate field indices for faster lookup in the order given by the header.
+            // Populate field indices for faster lookup in the order given by BitOffset
             this.fieldIndices = this.reader.GetFieldIndices();
         }
 
