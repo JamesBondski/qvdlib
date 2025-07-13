@@ -54,13 +54,9 @@ namespace Bondski.QvdLib
         /// <returns>A dictionary with name an postion based on the sorted fields</returns>
         public Dictionary<string, int> GetFieldIndices()
         {
-            Dictionary<string, int> retVal = new Dictionary<string, int>();
-
-            for (int i = 0; i < this.fields.Length; i++)
-            {
-                retVal.Add(this.fields[i].Name, i);
-            }
-            return retVal;
+            return this.fields
+                .Select((field, index) => new { field.Name, Index = index })
+                .ToDictionary(x => x.Name, x => x.Index);
         }
 
         /// <summary>
