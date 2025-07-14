@@ -33,8 +33,7 @@ namespace Bondski.QvdLib
         private readonly FieldInfo[] fields;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RowReader"/> class. The given dictionary
-        /// must be sorted by BitOffset.
+        /// Initializes a new instance of the <see cref="RowReader"/> class.
         /// </summary>
         /// <param name="header">QVD header for the file.</param>
         /// <param name="values">A dictionary with all values in the file.</param>
