@@ -1,5 +1,6 @@
 ﻿using Bondski.QvdLib;
 using CommandLine;
 
-Parser.Default.ParseArguments<FieldsOptions,object>(args)
-    .WithParsed<FieldsOptions>(FieldsOptions.Handle);
+Parser.Default.ParseArguments<FieldsOptions, DumpOptions>(args)
+    .WithParsed<FieldsOptions>(FieldsOptions.Handle)
+    .WithParsed<DumpOptions>(DumpOptions.Handle);
