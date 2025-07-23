@@ -64,10 +64,11 @@ namespace Bondski.QvdLib
         /// </summary>
         /// <param name="input">Stream to read from.</param>
         /// <returns>An array containing the values of the next row.</returns>
-        public Value[] ReadRow(Stream input)
+        public (Value[] Values, int[] ValueIds) ReadRow(Stream input)
         {
             input.ReadExactly(this.buffer);
             Value[] rowData = new Value[this.values.Count];
+            int[] rowIndices = new int[this.values.Count];
             int fieldIndex = 0;
             int byteIndex = 0;
             int bitIndex = 0;
@@ -110,6 +111,7 @@ namespace Bondski.QvdLib
                 if (valueIndex != -2)
                 {
                     rowData[fieldIndex] = this.values[fieldIndex][valueIndex];
+                    rowIndices[fieldIndex] = valueIndex;
                 }
                 else
                 {
@@ -122,7 +124,7 @@ namespace Bondski.QvdLib
                 fieldIndex++;
             }
 
-            return rowData;
+            return (rowData, rowIndices);
         }
     }
 }

@@ -15,7 +15,8 @@ namespace Bondski.QvdLib
     /// </summary>
     public class QvdReader : IDisposable
     {
-        private Value[]? currentRow = null;
+        private Value[]? currentRows = null;
+        private int[]? currentRowIndices = null;
         private RowReader reader;
         private FileStream input;
         private Dictionary<string, int> fieldIndices;
@@ -64,12 +65,12 @@ namespace Bondski.QvdLib
         {
             get
             {
-                if (this.currentRow == null)
+                if (this.currentRows == null)
                 {
                     throw new InvalidOperationException("No row has been read yet.");
                 }
 
-                return this.currentRow[fieldIndex];
+                return this.currentRows[fieldIndex];
             }
         }
 
@@ -82,7 +83,7 @@ namespace Bondski.QvdLib
         {
             get
             {
-                if (this.currentRow == null)
+                if (this.currentRows == null)
                 {
                     throw new InvalidOperationException("No row has been read yet.");
                 }
@@ -92,8 +93,46 @@ namespace Bondski.QvdLib
                     throw new ArgumentException("Field " + fieldName + " not found.");
                 }
 
-                return this.currentRow[this.fieldIndices[fieldName]];
+                return this.currentRows[this.fieldIndices[fieldName]];
             }
+        }
+
+        /// <summary>  
+        /// Returns the index of the value in the current row for the specified field name.  
+        /// </summary>  
+        /// <param name="fieldName">The name of the field for which to get the index.</param>  
+        /// <returns>The index of the value in the current row for the specified field name.</returns>  
+        /// <exception cref="ArgumentException">Thrown when the specified field name is not found.</exception>  
+        public int GetValueIndex(string fieldName)
+        {
+            if (!this.fieldIndices.ContainsKey(fieldName))
+            {
+                throw new ArgumentException("Field " + fieldName + " not found.");
+            }
+
+            return this.GetValueIndex(this.fieldIndices[fieldName]);
+        }
+
+        /// <summary>
+        /// Returns the index of the value in the current row for the specified field index.
+        /// </summary>
+        /// <param name="fieldIndex">The index of the field for which to get the value index.</param>
+        /// <returns>The index of the value in the current row for the specified field index.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when no row has been read yet.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the field index is out of range.</exception>
+        public int GetValueIndex(int fieldIndex)
+        {
+            if (this.currentRowIndices == null)
+            {
+                throw new InvalidOperationException("No row has been read yet.");
+            }
+
+            if (fieldIndex < 0 || fieldIndex >= this.currentRowIndices.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(fieldIndex), "Field index is out of range.");
+            }
+
+            return this.currentRowIndices[fieldIndex];
         }
 
         /// <summary>
@@ -108,7 +147,7 @@ namespace Bondski.QvdLib
             }
             else
             {
-                this.currentRow = this.reader.ReadRow(this.input);
+                (this.currentRows, this.currentRowIndices) = this.reader.ReadRow(this.input);
                 return true;
             }
         }
@@ -119,7 +158,7 @@ namespace Bondski.QvdLib
         /// <returns>An array containing the values in the current row.</returns>
         public Value[] GetValues()
         {
-            return this.currentRow;
+            return this.currentRows;
         }
 
         /// <summary>

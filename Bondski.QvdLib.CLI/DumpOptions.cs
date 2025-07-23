@@ -19,6 +19,9 @@ public class DumpOptions
     [Option("hiderowno", HelpText = "Blendet die Zeilennummer aus.")]
     public bool HideRowNo { get; set; }
 
+    [Option("valueid", HelpText = "Gibt zusätzlich den Index des Wertes aus.")]
+    public bool ValueId { get; set; }
+
     public static void Handle(DumpOptions opts)
     {
         using var reader = new QvdReader(opts.File);
@@ -40,13 +43,14 @@ public class DumpOptions
             }
         }
 
+        // Header-Zeile
         if (opts.Header)
         {
             var headerFields = reader.Header.Fields.Select(f => f.Name);
+            if (opts.ValueId)
+                headerFields = headerFields.Select(f => $"{f}/Index");
             if (!opts.HideRowNo)
-            {
                 headerFields = new[] { "RowNo" }.Concat(headerFields);
-            }
             Console.WriteLine(string.Join(opts.Delimiter, headerFields));
         }
 
@@ -56,12 +60,21 @@ public class DumpOptions
         {
             if (currentRow >= from)
             {
-                var values = reader.GetValues().Select(v => v.ToString() ?? "");
+                var values = reader.GetValues();
+                var output = new List<string>();
+
                 if (!opts.HideRowNo)
+                    output.Add(outputRow.ToString());
+
+                for (int i = 0; i < values.Length; i++)
                 {
-                    values = new[] { outputRow.ToString() }.Concat(values);
+                    if (opts.ValueId)
+                        output.Add($"{values[i].ToString() ?? ""}/{reader.GetValueIndex(i)}");
+                    else
+                        output.Add(values[i].ToString() ?? "");
                 }
-                Console.WriteLine(string.Join(opts.Delimiter, values));
+
+                Console.WriteLine(string.Join(opts.Delimiter, output));
                 outputRow++;
             }
             currentRow++;
